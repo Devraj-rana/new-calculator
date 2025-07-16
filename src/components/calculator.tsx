@@ -113,11 +113,12 @@ export function Calculator() {
         setIsGenerating(false);
     };
 
-    const buttons = [
-      'C', '7', '8', '9', '/',
-      'backspace', '4', '5', '6', '*',
-      '1', '2', '3', '-',
-      '0', '.', '+'
+    const buttonLayout = [
+        ['C', 'backspace', '(', ')', '/'],
+        ['7', '8', '9', '*'],
+        ['4', '5', '6', '-'],
+        ['1', '2', '3', '+'],
+        ['0', '.', '=']
     ];
 
     const getButtonClass = (btn: string) => {
@@ -126,6 +127,9 @@ export function Calculator() {
         }
         if (btn === 'C' || btn === 'backspace') {
             return 'bg-destructive/90 hover:bg-destructive text-destructive-foreground text-xl';
+        }
+        if (btn === '=') {
+            return 'bg-primary hover:bg-primary/90 text-primary-foreground text-3xl font-bold';
         }
         return 'bg-secondary hover:bg-accent hover:text-accent-foreground text-2xl';
     };
@@ -139,41 +143,23 @@ export function Calculator() {
                         <p className="text-primary font-bold text-4xl sm:text-5xl font-mono break-words">{result || <span className="opacity-0">0</span>}</p>
                     </div>
                     <div className="grid grid-cols-1 gap-2">
-                        <div className="grid grid-cols-5 gap-2">
-                            {['C', 'backspace', '(', ')', '/'].map(btn => (
-                                <Button key={btn} onClick={() => handleButtonClick(btn === '(' || btn === ')' ? btn : (btn === 'backspace' ? 'backspace' : 'C'))} className={`h-16 transition-transform duration-100 active:scale-95 ${getButtonClass(btn)}`}>
-                                    {btn === 'backspace' ? <Delete/> : btn}
-                                </Button>
-                            ))}
-                        </div>
-                        <div className="grid grid-cols-4 gap-2">
-                            {['7', '8', '9', '*'].map(btn => (
-                                <Button key={btn} onClick={() => handleButtonClick(btn)} className={`h-16 transition-transform duration-100 active:scale-95 ${getButtonClass(btn)}`}>
-                                    {btn}
-                                </Button>
-                            ))}
-                        </div>
-                        <div className="grid grid-cols-4 gap-2">
-                             {['4', '5', '6', '-'].map(btn => (
-                                <Button key={btn} onClick={() => handleButtonClick(btn)} className={`h-16 transition-transform duration-100 active:scale-95 ${getButtonClass(btn)}`}>
-                                    {btn}
-                                </Button>
-                            ))}
-                        </div>
-                        <div className="grid grid-cols-4 gap-2">
-                            {['1', '2', '3', '+'].map(btn => (
-                                <Button key={btn} onClick={() => handleButtonClick(btn)} className={`h-16 transition-transform duration-100 active:scale-95 ${getButtonClass(btn)}`}>
-                                    {btn}
-                                </Button>
-                            ))}
-                        </div>
-                        <div className="grid grid-cols-2 gap-2">
-                           <Button onClick={() => handleButtonClick('0')} className={`col-span-1 h-16 transition-transform duration-100 active:scale-95 ${getButtonClass('0')}`}>0</Button>
-                           <Button onClick={() => handleButtonClick('.')} className={`h-16 transition-transform duration-100 active:scale-95 ${getButtonClass('.')}`}>.</Button>
-                        </div>
-                         <Button onClick={() => handleButtonClick('=')} className="w-full mt-2 h-16 bg-primary hover:bg-primary/90 text-primary-foreground text-3xl font-bold transition-transform duration-100 active:scale-95">
-                            =
-                        </Button>
+                        {buttonLayout.map((row, rowIndex) => (
+                             <div key={rowIndex} className={`grid gap-2 grid-cols-${row.length === 5 ? 5 : (row.length === 3 ? '4' : '4')}`}>
+                                {row.map(btn => {
+                                    const isZero = btn === '0';
+                                    const isEqual = btn === '=';
+                                    return (
+                                        <Button 
+                                            key={btn} 
+                                            onClick={() => handleButtonClick(btn)} 
+                                            className={`h-16 transition-transform duration-100 active:scale-95 ${getButtonClass(btn)} ${isZero ? 'col-span-2' : ''} ${isEqual ? 'col-span-2' : ''}`}
+                                        >
+                                            {btn === 'backspace' ? <Delete/> : btn}
+                                        </Button>
+                                    )
+                                })}
+                            </div>
+                        ))}
                     </div>
                 </CardContent>
             </Card>
@@ -218,5 +204,4 @@ export function Calculator() {
             </Card>
         </div>
     );
-
-    
+}
