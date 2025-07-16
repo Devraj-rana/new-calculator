@@ -114,22 +114,19 @@ export function Calculator() {
     };
 
     const buttonLayout = [
-        ['C', 'backspace', '(', ')', '/'],
-        ['7', '8', '9', '*'],
-        ['4', '5', '6', '-'],
-        ['1', '2', '3', '+'],
-        ['0', '.', '=']
+        ['C', 'backspace', '(', ')'],
+        ['7', '8', '9', '/'],
+        ['4', '5', '6', '*'],
+        ['1', '2', '3', '-'],
+        ['0', '.', '=', '+']
     ];
 
     const getButtonClass = (btn: string) => {
-        if (['/', '*', '-', '+'].includes(btn)) {
+        if (['/', '*', '-', '+', '='].includes(btn)) {
             return 'bg-primary/80 hover:bg-primary text-primary-foreground text-2xl';
         }
-        if (btn === 'C' || btn === 'backspace') {
+        if (['C', 'backspace'].includes(btn)) {
             return 'bg-destructive/90 hover:bg-destructive text-destructive-foreground text-xl';
-        }
-        if (btn === '=') {
-            return 'bg-primary hover:bg-primary/90 text-primary-foreground text-3xl font-bold';
         }
         return 'bg-secondary hover:bg-accent hover:text-accent-foreground text-2xl';
     };
@@ -142,24 +139,19 @@ export function Calculator() {
                         <p className="text-muted-foreground text-2xl sm:text-3xl font-mono break-words">{expression || <span className="opacity-50">0</span>}</p>
                         <p className="text-primary font-bold text-4xl sm:text-5xl font-mono break-words">{result || <span className="opacity-0">0</span>}</p>
                     </div>
-                    <div className="grid grid-cols-1 gap-2">
-                        {buttonLayout.map((row, rowIndex) => (
-                             <div key={rowIndex} className={`grid gap-2 grid-cols-${row.length === 5 ? 5 : (row.length === 3 ? '4' : '4')}`}>
-                                {row.map(btn => {
-                                    const isZero = btn === '0';
-                                    const isEqual = btn === '=';
-                                    return (
-                                        <Button 
-                                            key={btn} 
-                                            onClick={() => handleButtonClick(btn)} 
-                                            className={`h-16 transition-transform duration-100 active:scale-95 ${getButtonClass(btn)} ${isZero ? 'col-span-2' : ''} ${isEqual ? 'col-span-2' : ''}`}
-                                        >
-                                            {btn === 'backspace' ? <Delete/> : btn}
-                                        </Button>
-                                    )
-                                })}
-                            </div>
-                        ))}
+                    <div className="grid grid-cols-4 gap-2">
+                        {buttonLayout.flat().map((btn) => {
+                            const isZero = btn === '0';
+                            return (
+                                <Button
+                                    key={btn}
+                                    onClick={() => handleButtonClick(btn)}
+                                    className={`h-16 transition-transform duration-100 active:scale-95 ${getButtonClass(btn)} ${isZero ? 'col-span-2' : ''}`}
+                                >
+                                    {btn === 'backspace' ? <Delete /> : btn}
+                                </Button>
+                            )
+                        })}
                     </div>
                 </CardContent>
             </Card>
