@@ -118,7 +118,7 @@ export function Calculator() {
         ['7', '8', '9', '/'],
         ['4', '5', '6', '*'],
         ['1', '2', '3', '-'],
-        ['0', '.', '=', '+']
+        ['0', '.', '+', '=']
     ];
 
     const getButtonClass = (btn: string) => {
@@ -142,11 +142,12 @@ export function Calculator() {
                     <div className="grid grid-cols-4 gap-2">
                         {buttonLayout.flat().map((btn) => {
                             const isZero = btn === '0';
+                            const isEqual = btn === '=';
                             return (
                                 <Button
                                     key={btn}
                                     onClick={() => handleButtonClick(btn)}
-                                    className={`h-16 transition-transform duration-100 active:scale-95 ${getButtonClass(btn)} ${isZero ? 'col-span-2' : ''}`}
+                                    className={`h-16 transition-transform duration-100 active:scale-95 ${getButtonClass(btn)} ${isZero ? 'col-span-2' : ''} ${isEqual ? 'col-span-1' : ''}`}
                                 >
                                     {btn === 'backspace' ? <Delete /> : btn}
                                 </Button>
