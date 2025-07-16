@@ -36,7 +36,7 @@ const prompt = ai.definePrompt({
   History: {{{history}}}
 
   Make sure the problems are similar to the calculations in the history, but with different numbers.  Give different problems to challenge the user.
-  Return the problems as a JSON array of strings.
+  Return the problems as a JSON object with a key "problems" that contains an array of strings.
   `,
 });
 
