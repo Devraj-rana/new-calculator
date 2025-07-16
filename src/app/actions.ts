@@ -15,7 +15,8 @@ export async function getMathProblems(history: string[]): Promise<string[]> {
     const result = await generateMathProblems(input);
     return result.problems;
   } catch (error) {
-    console.error('Error generating math problems:', error);
-    return ['Sorry, there was an error generating problems.'];
+    console.error('An error occurred while generating math problems. This might be due to a missing or invalid API key.');
+    console.error('Full error details:', error);
+    return ['Sorry, there was an error generating problems. Please check the server logs for more details.'];
   }
 }
